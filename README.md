@@ -19,6 +19,7 @@ For every module:
 | # | Topic | Paper | Status |
 |---|-------|-------|--------|
 | 01 | Transformer / Attention | [Attention Is All You Need (Vaswani et al. 2017)](https://arxiv.org/abs/1706.03762) | in progress |
+| 02 | Model merging | [Model Soups](https://arxiv.org/abs/2203.05482), [Task Arithmetic](https://arxiv.org/abs/2212.04089), [TIES](https://arxiv.org/abs/2306.01708), [DARE](https://arxiv.org/abs/2311.03099) | in progress |
 
 ## Layout
 
