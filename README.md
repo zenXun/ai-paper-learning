@@ -1,4 +1,4 @@
-# ai_research
+# ai-paper-learning
 
 A learning repo: read AI papers → implement minimal MVPs → distill into tutorials.
 
@@ -24,7 +24,7 @@ For every module:
 ## Layout
 
 ```
-ai_research/
+ai-paper-learning/
 ├── README.md            # this file
 ├── 01_transformer/
 │   └── README.md        # module entry: setup, train, visualize
