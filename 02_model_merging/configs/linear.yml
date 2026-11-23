@@ -1,0 +1,9 @@
+models:
+  - model: runs/sst2
+    parameters:
+      weight: 0.5
+  - model: runs/ag_news
+    parameters:
+      weight: 0.5
+merge_method: linear
+dtype: float32

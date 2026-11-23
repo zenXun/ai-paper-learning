@@ -5,8 +5,7 @@ operating on the weights directly, with no further training. The module follows
 the repo method: write each merge from its equations first, then compare with a
 mature implementation ([mergekit](https://github.com/arcee-ai/mergekit)).
 
-Status: environment, baseline and fine-tuning script are in place. The two
-fine-tuned checkpoints and every merge are still to do.
+Status: full fine-tuning, hand-written JAX merges (Linear, Task Arithmetic, TIES, DARE), and `mergekit` cross-checks are complete.
 
 ## Papers
 
@@ -33,6 +32,8 @@ python3.12 -m venv .venv
 | `common.py` | Base model, the two tasks, prompt format, accuracy metric |
 | `evaluate.py` | Accuracy of one model on both tasks |
 | `finetune.py` | Full fine-tuning on one task, saves to `runs/<task>` (not in git) |
+| `merge_jax.py` | Hand-written cosine similarity, Linear, Task Arithmetic, TIES, and DARE in JAX |
+| `configs/` | `mergekit` YAML configs (`linear.yml`, `ties.yml`) for cross-checking |
 
 Base model: `HuggingFaceTB/SmolLM2-360M-Instruct` (362M parameters, Apache-2.0).
 
@@ -45,11 +46,21 @@ examples of the evaluation split.
 
 Apple M2, 16 GB, PyTorch on MPS, 2026-11-22.
 
-| Model | SST-2 | AG News |
-|---|---|---|
-| Chance | 50.0% | 25.0% |
-| Base, no fine-tuning | 50.4% | 44.8% |
-| 40 steps on AG News (smoke test, not saved) | 60.2% | 81.8% |
+| Model | SST-2 | AG News | Avg |
+|---|---|---|---|
+| Chance | 50.0% | 25.0% | 37.5% |
+| Base, no fine-tuning | 50.4% | 44.8% | 47.6% |
+| Fine-tuned on SST-2 (500 steps, lr=1e-5) | 90.8% | 67.4% | 79.1% |
+| Fine-tuned on AG News (500 steps, lr=1e-5) | 88.0% | 92.4% | 90.2% |
+| Linear average (`alpha=0.5`, JAX) | 91.6% | 88.4% | 90.0% |
+| Linear average (`mergekit`) | 91.6% | 88.4% | 90.0% |
+| Task Arithmetic (`lam=0.7`, JAX) | 91.4% | 90.4% | 90.9% |
+| **Task Arithmetic (`lam=1.0`, JAX)** | **91.2%** | **91.8%** | **91.5%** |
+| TIES (`density=0.2, lam=0.7`, JAX) | 92.4% | 89.0% | 90.7% |
+| TIES (`density=0.2, weight=0.7`, `mergekit`) | 92.4% | 88.6% | 90.5% |
+| DARE (`drop=0.0..0.99, lam=0.5`, JAX) | 91.4%–91.8% | 88.4%–88.6% | 89.9%–90.1% |
+
+Task-vector cosine similarity (`tau_sst2` vs `tau_ag_news`): **0.0245** (L2 norms: 3.53 vs 4.14).
 
 The base model answers "negative" for almost every SST-2 review (199 of 200 in
 a spot check), which is why it sits at chance.

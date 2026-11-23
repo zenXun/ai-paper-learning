@@ -1,0 +1,14 @@
+models:
+  - model: runs/sst2
+    parameters:
+      density: 0.2
+      weight: 0.7
+  - model: runs/ag_news
+    parameters:
+      density: 0.2
+      weight: 0.7
+merge_method: ties
+base_model: HuggingFaceTB/SmolLM2-360M-Instruct
+parameters:
+  normalize: false
+dtype: float32
