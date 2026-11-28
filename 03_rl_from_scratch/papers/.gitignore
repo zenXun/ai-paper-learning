@@ -1,0 +1,4 @@
+# Keep downloaded PDFs and scraped articles local (copyright & repo size); track README index only
+part_A_fundamentals/
+part_B_llm_rl/
+*.pdf
